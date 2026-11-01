@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/webp" href="icon.webp">
+  <title>Google</title>
+  <style>
+    /* Reset & Base Styles (Classic 2011 Google Aesthetic) */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: arial, sans-serif;
+      font-size: 13px;
+      color: #222;
+      background-color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    a {
+      color: #1124e4;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    /* Top Black Bar (Introduced around June 2011) */
+    #gb {
+      background-color: #2d2d2d;
+      height: 30px;
+      line-height: 30px;
+      font-size: 12px;
+      width: 100%;
+      padding: 0 15px;
+      display: flex;
+      justify-content: space-between;
+      user-select: none;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    }
+
+    .gb-nav-left, .gb-nav-right {
+      display: flex;
+      align-items: center;
+      list-style: none;
+    }
+
+    .gb-nav-left li, .gb-nav-right li {
+      margin-right: 15px;
+    }
+
+    .gb-nav-right li {
+      margin-right: 0;
+      margin-left: 15px;
+    }
+
+    .gb-nav-left a, .gb-nav-right a {
+      color: #ccc;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .gb-nav-left a:hover, .gb-nav-right a:hover {
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .gb-nav-left .active a {
+      color: #fff;
+      border-bottom: 2px solid #dd4b39;
+      padding-bottom: 5px;
+    }
+
+    .gb-button-signin {
+      background: linear-gradient(to bottom, #4d90fe, #4787ed);
+      border: 1px solid #3079ed;
+      color: #fff !important;
+      font-weight: bold;
+      padding: 3px 10px;
+      border-radius: 2px;
+      line-height: 1.2;
+      display: inline-block;
+    }
+
+    .gb-button-signin:hover {
+      background: linear-gradient(to bottom, #357ae8, #2f5bb7);
+      border-style: solid;
+      border-color: #2f5bb7;
+    }
+
+    /* Main Container */
+    .main-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 100px;
+      flex-grow: 1;
+    }
+
+    /* Logo Styling */
+    .logo-wrapper {
+      margin-bottom: 25px;
+      text-align: center;
+    }
+
+    .logo-wrapper img {
+      width: 275px;
+      height: 95px;
+      object-fit: contain;
+    }
+
+    /* Search Box Container */
+    .search-box-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 584px;
+      padding: 0 10px;
+    }
+
+    .search-input-container {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .search-input {
+      width: 100%;
+      height: 36px;
+      padding: 5px 10px;
+      font-size: 16px;
+      font-family: arial, sans-serif;
+      border: 1px solid #d9d9d9;
+      border-top: 1px solid #c0c0c0;
+      outline: none;
+      box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+      border-radius: 1px;
+    }
+
+    .search-input:focus {
+      border: 1px solid #4d90fe;
+      box-shadow: inset 0 1px 2px rgba(0,0,0,0.3);
+    }
+
+    /* Auto-complete / Search Suggestions Dropdown */
+    .suggestions-box {
+      position: absolute;
+      top: 36px;
+      left: 10px;
+      right: 10px;
+      background: #fff;
+      border: 1px solid #d9d9d9;
+      border-top: none;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      display: none;
+      z-index: 100;
+    }
+
+    .suggestion-item {
+      padding: 6px 10px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .suggestion-item:hover, .suggestion-item.selected {
+      background-color: #eee;
+    }
+
+    /* Buttons Group */
+    .buttons-wrapper {
+      margin-top: 28px;
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .btn-2011 {
+      height: 29px;
+      line-height: 27px;
+      background-color: #f5f5f5;
+      background-image: linear-gradient(to bottom, #f5f5f5, #f1f1f1);
+      border: 1px solid #dcdcdc;
+      border-radius: 2px;
+      color: #444;
+      font-size: 11px;
+      font-weight: bold;
+      padding: 0 12px;
+      cursor: pointer;
+      text-align: center;
+      user-select: none;
+    }
+
+    .btn-2011:hover {
+      background-color: #f8f8f8;
+      background-image: linear-gradient(to bottom, #f8f8f8, #f1f1f1);
+      border-color: #c6c6c6;
+      color: #333;
+      box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+    }
+
+    .btn-2011:active {
+      background-color: #f6f6f6;
+      background-image: linear-gradient(to bottom, #f6f6f6, #f1f1f1);
+      box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+    }
+
+    /* Search Results Layer (Mock Instant View) */
+    #results-page {
+      display: none;
+      width: 100%;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .result-stats {
+      color: #888;
+      font-size: 13px;
+      margin-bottom: 20px;
+    }
+
+    .result-item {
+      margin-bottom: 26px;
+    }
+
+    .result-title {
+      font-size: 18px;
+      color: #122172;
+      text-decoration: underline;
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .result-url {
+      color: #00802a;
+      font-size: 14px;
+      margin-bottom: 2px;
+    }
+
+    .result-snippet {
+      color: #333;
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    /* Bottom Footer */
+    #footer {
+      background-color: #f2f2f2;
+      border-top: 1px solid #e4e4e4;
+      font-size: 13px;
+      color: #666;
+      padding: 12px 25px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: auto;
+    }
+
+    .footer-left, .footer-right {
+      display: flex;
+      gap: 20px;
+      list-style: none;
+    }
+
+    .footer-left a, .footer-right a {
+      color: #666;
+    }
+
+    /* Switch Tabs Notice */
+    .tab-notice {
+      margin-top: 15px;
+      font-size: 12px;
+      color: #666;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Dark Navigation Bar (June 2011 Redesign Style) -->
+  <div id="gb">
+    <ul class="gb-nav-left">
+      <li class="active" id="tab-search"><a href="#" onclick="switchTab('Search')">+You</a></li>
+      <li><a href="#" onclick="switchTab('Search')">Web</a></li>
+      <li><a href="#" onclick="switchTab('Images')">Images</a></li>
+      <li><a href="#" onclick="switchTab('Maps')">Maps</a></li>
+      <li><a href="#" onclick="switchTab('Videos')">Videos</a></li>
+      <li><a href="#" onclick="switchTab('News')">News</a></li>
+      <li><a href="#" onclick="switchTab('Shopping')">Shopping</a></li>
+      <li><a href="#" onclick="switchTab('Gmail')">Gmail</a></li>
+      <li><a href="#" onclick="switchTab('More')">More &raquo;</a></li>
+    </ul>
+    <ul class="gb-nav-right">
+      <li><a href="#" class="gb-button-signin" onclick="alert('Sign In clicked!')">Sign in</a></li>
+    </ul>
+  </div>
+
+  <!-- Main Content View -->
+  <div class="main-container" id="main-view">
+    
+    <!-- Google Logo Asset Requirement -->
+    <div class="logo-wrapper">
+      <img src="googlelogo.png" alt="Google" id="main-logo" onerror="this.onerror=null; this.src='https://web.archive.org/web/20110701000000im_/http://www.google.com/images/srpr/logo3w.png';">
+    </div>
+
+    <!-- Search Form -->
+    <div class="search-box-wrapper">
+      <form id="search-form" onsubmit="handleSearch(event)">
+        <div class="search-input-container">
+          <input 
+            type="text" 
+            id="search-input" 
+            class="search-input" 
+            autocomplete="off" 
+            autofocus 
+            aria-label="Search"
+            oninput="handleInput()"
+          >
+        </div>
+        
+        <!-- Suggestions Dropdown Box -->
+        <div id="suggestions" class="suggestions-box"></div>
+      </form>
+      
+      <!-- Action Buttons -->
+      <div class="buttons-wrapper">
+        <button class="btn-2011" onclick="handleSearch(event)">Google Search</button>
+        <button class="btn-2011" onclick="feelingLucky(event)">I'm Feeling Lucky</button>
+      </div>
+
+      <div class="tab-notice" id="tab-notice" style="text-align:center;"></div>
+    </div>
+
+  </div>
+
+  <!-- Search Results View (Simulated Google Instant / Results Page) -->
+  <div id="results-page">
+    <div class="result-stats" id="result-stats">About 1,420,000,000 results (0.18 seconds)</div>
+    <div id="results-list"></div>
+    <p style="margin-top: 20px;"><a href="#" onclick="backToHome()">&laquo; Back to Google Home</a></p>
+  </div>
+
+  <!-- Footer -->
+  <div id="footer">
+    <ul class="footer-left">
+      <li><a href="#">Advertising Programs</a></li>
+      <li><a href="#">Business Solutions</a></li>
+      <li><a href="#">About Google</a></li>
+    </ul>
+    <ul class="footer-right">
+      <li><a href="#">Google.com in English</a></li>
+    </ul>
+  </div>
+
+  <script>
+    // Mock Search Database for Suggestions & Results (Expanded Topics)
+    const mockDatabase = {
+      "accordion": [
+        { title: "Accordion - Wikipedia, the free encyclopedia", url: "https://en.wikipedia.org/wiki/Accordion", snippet: "The accordion is a family of box-shaped musical instruments of the bellows-driven free-reed aerophone type. Learn about its history, construction, and types like the piano accordion or button accordion." },
+        { title: "How to Play Accordion - Beginner's Guide", url: "https://www.accordionlessons.example/guide", snippet: "Master bass keys, bellows control, and right-hand melody fundamentals for acoustic accordion performance." }
+      ],
+      "trumpet": [
+        { title: "Trumpet - Classical & Jazz Brass Instrument Guide", url: "https://en.wikipedia.org/wiki/Trumpet", snippet: "The trumpet is a brass instrument commonly used in classical music ensembles and jazz bands. Features valves, leadpipe tuning, and embouchure techniques." },
+        { title: "Famous Trumpet Players in History", url: "https://www.jazzbrass.example/trumpet-legends", snippet: "Explore the legacy of iconic brass performers including Louis Armstrong, Miles Davis, and Dizzy Gillespie." }
+      ],
+      "clocks": [
+        { title: "Clocks through Time: History of Horology", url: "https://en.wikipedia.org/wiki/Clock", snippet: "An instrument used to measure, keep, and indicate time. Explore mechanical grandfather clocks, atomic clocks, and quartz wristwatches." },
+        { title: "Atomic Clocks and UTC Time Precision", url: "https://www.timekeep.example/atomic-clocks", snippet: "How modern timekeeping relies on cesium frequency standards to keep global navigation and computers in sync." }
+      ],
+      "celebrities": [
+        { title: "Celebrity News, Hollywood Gossip and Pop Culture", url: "https://www.celebritybuzz.example/news", snippet: "Catch up on top trending celebrity photos, red carpet fashion choices, movie releases, and entertainment updates." },
+        { title: "Top 100 Most Influential Figures in Media", url: "https://www.poprank.example/influential-celebrities", snippet: "A ranking of global stars, music artists, and Hollywood actors dominating box offices and culture." }
+      ],
+      "youtube": [
+        { title: "YouTube - Broadcast Yourself", url: "https://www.youtube.com", snippet: "Share your videos with friends, family, and the world. Upload standard definition and HD videos, rate clips, and leave comments." },
+        { title: "YouTube Blog - What's New in 2011 Video Tech", url: "https://youtube-global.blogspot.com/2011", snippet: "Discover new channel layouts, 3D video support, live streaming updates, and viral web creators." }
+      ],
+      "romanticism": [
+        { title: "Romanticism - Art, Literature & Philosophical Movement", url: "https://en.wikipedia.org/wiki/Romanticism", snippet: "An artistic, literary, musical, and intellectual movement that originated in Europe toward the end of the 18th century, emphasizing emotion and individualism." },
+        { title: "Romantic Era Composers and Poets", url: "https://www.historyart.example/romanticism-movement", snippet: "Explore famous works by Chopin, Beethoven, Lord Byron, Percy Bysshe Shelley, and William Wordsworth." }
+      ],
+      "peppa pig": [
+        { title: "Peppa Pig Official Website", url: "https://www.peppapig.example", snippet: "Join Peppa Pig, George, Mummy Pig and Daddy Pig for fun games, coloring pages, video clips, and live tour schedules." },
+        { title: "Peppa Pig - Animated Children's Television Series", url: "https://en.wikipedia.org/wiki/Peppa_Pig", snippet: "A British preschool animated television series directed and produced by Astley Baker Davies." }
+      ],
+      "belt": [
+        { title: "Belt - Clothing Accessory & Functional Fashion", url: "https://en.wikipedia.org/wiki/Belt_(clothing)", snippet: "A flexible band or strap, typically made of leather or heavy cloth, worn around the waist to support trousers or decorate garments." },
+        { title: "How to Choose and Style Leather Belts", url: "https://www.fashionguide.example/belts-styling", snippet: "Match belt buckles, widths, and leather finishes to formal suits or casual denim." }
+      ],
+      "bell": [
+        { title: "Bell - Percussion Sound Instrument & History", url: "https://en.wikipedia.org/wiki/Bell", snippet: "A directly struck idiophone percussion instrument. Explore church bells, temple bells, and carillons." },
+        { title: "The Liberty Bell & Historic Castings", url: "https://www.historybells.example/liberty-bell", snippet: "Learn how bronze bells are cast using traditional foundry sand mold techniques." }
+      ],
+      "pasta": [
+        { title: "Pasta - Traditional Italian Cuisine & Shapes", url: "https://en.wikipedia.org/wiki/Pasta", snippet: "A staple food of Italian origin made from an unleavened dough of wheat flour mixed with water or eggs, formed into sheets or shapes." },
+        { title: "Authentic Italian Pasta Recipes & Cooking Tips", url: "https://www.recipes.example/italian-pasta", snippet: "How to cook al dente spaghetti, carbonara, tagliatelle, penne arrabbiata, and homemade egg lasagna." }
+      ],
+      "pizza": [
+        { title: "Pizza - Authentic Neapolitan Recipe & Varieties", url: "https://en.wikipedia.org/wiki/Pizza", snippet: "A savory dish of Italian origin consisting of a usually round, flattened base of leavened wheat-based dough topped with tomatoes, cheese, and various ingredients." },
+        { title: "Top 10 Authentic Pizza Styles Around the World", url: "https://www.foodie.example/pizza-styles", snippet: "From Margherita in Naples to Detroit deep-dish, explore wood-fired crust secrets and toppings." }
+      ],
+      "minecraft": [
+        { title: "Minecraft Official Site - Building & Adventure Game", url: "https://www.minecraft.net", snippet: "Minecraft is a sandbox video game where players build structures, mine resources, defeat mobs, and explore infinite block worlds." },
+        { title: "Minecraft Wiki - Crafting Recipes & Survival Tips", url: "https://minecraft.fandom.com/wiki/Minecraft_Wiki", snippet: "Complete database for redstone mechanisms, brewing potions, crafting tools, and surviving your first night." }
+      ],
+      "tingsha": [
+        { title: "Tingsha - Tibetan Cymbals & Sound Healing", url: "https://en.wikipedia.org/wiki/Tingsha", snippet: "Tibetan cymbals used traditionally in prayer and rituals by Himalayan Buddhist practitioners, prized for clear resonant tones." },
+        { title: "Meditation and Tingsha Chimes Guide", url: "https://www.soundhealing.example/tingsha-meditation", snippet: "Using tingsha bells in mindfulness sessions, sound therapy, chakra alignment, and space clearing." }
+      ],
+      "romania": [
+        { title: "Romania - Official Country Guide & Travel Information", url: "https://en.wikipedia.org/wiki/Romania", snippet: "Romania is a country located at the intersection of Central, Eastern, and Southeastern Europe. Discover Bucharest, Transylvania, and the Carpathian Mountains." },
+        { title: "Visit Romania - Tourism, Castles & Culture", url: "https://www.romaniatourism.example", snippet: "Explore Bran Castle, Peleș Castle, Danube Delta wildlife reserves, and medieval Saxon villages." }
+      ],
+      "world": [
+        { title: "World - Globe Geography & Human Atlas", url: "https://en.wikipedia.org/wiki/World", snippet: "Comprehensive overview of Earth's geography, ecosystems, continents, population centers, and global history." },
+        { title: "World News & Global Affairs Updates", url: "https://www.worldnews.example/global", snippet: "International news reports, environmental studies, world map resources, and cultural exchange features." }
+      ],
+      "tutorials": [
+        { title: "Free Online Web Development & Coding Tutorials", url: "https://www.tutorials.example/coding", snippet: "Learn HTML5, CSS, JavaScript, PHP, and database design with step-by-step interactive lessons and practical exercises." },
+        { title: "Video Tutorials Hub - How-To Guides for Everything", url: "https://www.tutorials.example/all-topics", snippet: "Browse thousands of instructional guides ranging from graphic design and photography to DIY home repair." }
+      ],
+      "google": [
+        { title: "Google Search Engine", url: "https://www.google.com", snippet: "Search the world's information, including webpages, images, videos and more." },
+        { title: "Google Chrome - The Fast & Secure Web Browser", url: "https://www.google.com/chrome", snippet: "Get more done with the new Google Chrome. A more simple, secure, and faster web browser than ever." }
+      ],
+      "2011": [
+        { title: "2011 in Review - Year in Keywords", url: "https://archive.google.com/2011", snippet: "Explore the searches, people, and events that captured the world's attention in 2011." },
+        { title: "Google Redesign 2011", url: "https://wikipedia.org/wiki/Google_Search", snippet: "In 2011 Google introduced its dark navigation bar and streamlined minimalist UI aesthetic." }
+      ],
+      "html": [
+        { title: "HTML5 Specification & Documentation", url: "https://developer.mozilla.org/en-US/docs/Web/HTML", snippet: "HyperText Markup Language (HTML) is the standard markup language for documents designed to be displayed in a web browser." }
+      ]
+    };
+
+    const suggestionsList = [
+      "accordion lessons",
+      "trumpet jazz solos",
+      "clocks antique price guide",
+      "celebrities red carpet 2011",
+      "youtube trending videos",
+      "romanticism poetry summary",
+      "peppa pig episodes",
+      "belt leather accessories",
+      "bell foundry history",
+      "pasta recipe Italian style",
+      "pizza dough recipe",
+      "minecraft survival tips",
+      "tingsha cymbals sound therapy",
+      "romania tourism guide",
+      "world map HD geography",
+      "tutorials HTML5 CSS3 JavaScript",
+      "google chrome download",
+      "2011 web design trends"
+    ];
+
+    const input = document.getElementById('search-input');
+    const suggestionsBox = document.getElementById('suggestions');
+    const mainView = document.getElementById('main-view');
+    const resultsPage = document.getElementById('results-page');
+    const resultsList = document.getElementById('results-list');
+    const tabNotice = document.getElementById('tab-notice');
+
+    // Handle Input Typing & Render Suggestions
+    function handleInput() {
+      const query = input.value.trim().toLowerCase();
+      if (!query) {
+        suggestionsBox.style.display = 'none';
+        return;
+      }
+
+      const matches = suggestionsList.filter(s => s.toLowerCase().includes(query));
+      if (matches.length > 0) {
+        suggestionsBox.innerHTML = matches.map(match => 
+          `<div class="suggestion-item" onclick="selectSuggestion('${match}')">${match}</div>`
+        ).join('');
+        suggestionsBox.style.display = 'block';
+      } else {
+        suggestionsBox.style.display = 'none';
+      }
+    }
+
+    function selectSuggestion(text) {
+      input.value = text;
+      suggestionsBox.style.display = 'none';
+      executeSearch(text);
+    }
+
+    function handleSearch(e) {
+      if (e) e.preventDefault();
+      const query = input.value.trim();
+      if (query) {
+        executeSearch(query);
+      }
+    }
+
+    function feelingLucky(e) {
+      if (e) e.preventDefault();
+      const query = input.value.trim();
+      if (query) {
+        window.location.href = `https://www.google.com/search?q=${encodeURIComponent(query)}&btnI=I`;
+      } else {
+        window.location.href = "https://www.google.com/doodles";
+      }
+    }
+
+    // Execute Search Simulation
+    function executeSearch(query) {
+      suggestionsBox.style.display = 'none';
+      mainView.style.display = 'none';
+      resultsPage.style.display = 'block';
+
+      document.getElementById('result-stats').innerText = `About ${Math.floor(Math.random() * 500000000 + 10000000).toLocaleString()} results (0.${Math.floor(Math.random() * 30 + 10)} seconds)`;
+
+      const key = Object.keys(mockDatabase).find(k => query.toLowerCase().includes(k));
+      let results = mockDatabase[key];
+
+      if (!results) {
+        results = [
+          {
+            title: `${query} - Google Search`,
+            url: `https://www.google.com/search?q=${encodeURIComponent(query)}`,
+            snippet: `Search results and Web pages related to "${query}" matching classic 2011 Google query standards.`
+          },
+          {
+            title: `Learn more about ${query}`,
+            url: `https://en.wikipedia.org/wiki/Special:Search?search=${encodeURIComponent(query)}`,
+            snippet: `Read encyclopedic articles and dynamic facts about ${query} on Wikipedia.`
+          }
+        ];
+      }
+
+      resultsList.innerHTML = results.map(item => `
+        <div class="result-item">
+          <a href="${item.url}" class="result-title" target="_blank">${item.title}</a>
+          <div class="result-url">${item.url}</div>
+          <div class="result-snippet">${item.snippet}</div>
+        </div>
+      `).join('');
+    }
+
+    function backToHome() {
+      resultsPage.style.display = 'none';
+      mainView.style.display = 'flex';
+      input.value = '';
+      tabNotice.innerText = '';
+    }
+
+    // Handle Header Navigation Tabs
+    function switchTab(tabName) {
+      if (tabName === 'Search') {
+        backToHome();
+        return;
+      }
+      tabNotice.innerText = `Switched to Google ${tabName} mode (2011 visual interface).`;
+    }
+
+    // Hide suggestions dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.search-box-wrapper')) {
+        suggestionsBox.style.display = 'none';
+      }
+    });
+  </script>
+</body>
+</html>
